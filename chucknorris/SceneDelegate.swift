@@ -7,16 +7,37 @@
 
 import UIKit
 
+class MockService: ServiceProtocol {
+    
+    func fetchData<T>(_ endpoint: String, completion: @escaping (Result<T, Error>) -> Void) where T : Decodable {
+        let joke = Joke(id: 0, joke: "Hello World.")
+        let data = Data(value: [joke])
+        guard let data = try? JSONEncoder().encode(data),
+              let decoded = try? JSONDecoder().decode(T.self, from: data) else { return }
+        return completion(.success(decoded))
+    }
+}
+
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
-        // If using a storyboard, the `window` property will automatically be initialized and attached to the scene.
-        // This delegate does not imply the connecting scene or session are new (see `application:configurationForConnectingSceneSession` instead).
-        guard let _ = (scene as? UIWindowScene) else { return }
+        
+        guard let windowScene = (scene as? UIWindowScene) else { return }
+        
+        let window = UIWindow(windowScene: windowScene)
+        self.window = window
+        
+        let api = Service()
+//        let api = MockService()
+        let viewModel = MainControllerViewModel(api: api)
+        let rootViewController = MainController(viewModel: viewModel)
+        let navigationController = UINavigationController(rootViewController: rootViewController)
+        
+        window.rootViewController = navigationController
+        window.makeKeyAndVisible()
     }
 
     func sceneDidDisconnect(_ scene: UIScene) {
