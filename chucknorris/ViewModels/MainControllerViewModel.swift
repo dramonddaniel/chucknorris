@@ -32,15 +32,15 @@ class MainControllerViewModel {
             switch response {
             case let .success(data):
                 
-                let viewModels: [JokeViewModel] = data.value.map({ joke in
+                let jokeViewModel: [JokeViewModel] = data.value.map({ joke in
                     return JokeViewModel(joke: joke)
                 })
                 
                 let badWords: [String] = ["List", "Of", "Bad", "Words"]
-                let validator = JokeValidator(badWords: badWords)
+                let jokeValidator = JokeValidator(badWords: badWords)
                 
-                self.jokes = viewModels.filter({ joke in
-                    guard let isValid: Bool = try? validator.isValidJoke(joke: joke) else { return false }
+                self.jokes = jokeViewModel.filter({ joke in
+                    guard let isValid: Bool = try? jokeValidator.isValidJoke(joke: joke) else { return false }
                     return isValid
                 })
                 

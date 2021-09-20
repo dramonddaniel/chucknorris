@@ -32,8 +32,7 @@ class MainController: UIViewController {
         viewModel.updateUI = { [unowned self] in
             /**
              I'm using **unowned** over **weak** here
-             as we know that self won't ever be
-             nil.
+             as we know that self won't ever be nil.
              */
             self.refreshControl.endRefreshing()
             self.collectionView.reloadData()
@@ -66,9 +65,7 @@ class MainController: UIViewController {
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(JokeCell.self, forCellWithReuseIdentifier: cellId)
-        
         collectionView.refreshControl = refreshControl
-        
         return collectionView
     }()
     
@@ -90,10 +87,6 @@ class MainController: UIViewController {
         
         collectionViewConstraints()
     }
-}
-
-extension MainController: UICollectionViewDelegate {
-    
 }
 
 extension MainController: UICollectionViewDataSource {

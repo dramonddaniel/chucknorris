@@ -7,17 +7,6 @@
 
 import UIKit
 
-class MockService: ServiceProtocol {
-    
-    func fetchData<T>(_ endpoint: String, completion: @escaping (Result<T, Error>) -> Void) where T : Decodable {
-        let joke = Joke(id: 0, joke: "Hello World.")
-        let data = Data(value: [joke])
-        guard let data = try? JSONEncoder().encode(data),
-              let decoded = try? JSONDecoder().decode(T.self, from: data) else { return }
-        return completion(.success(decoded))
-    }
-}
-
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
@@ -31,7 +20,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         self.window = window
         
         let api = Service()
-//        let api = MockService()
+//        let api = MockService(jokes: [
+//            Joke(id: 0, joke: "Hello World"),
+//            Joke(id: 0, joke: "Hello World"),
+//        ])
         let viewModel = MainControllerViewModel(api: api)
         let rootViewController = MainController(viewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: rootViewController)

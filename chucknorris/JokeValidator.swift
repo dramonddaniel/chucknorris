@@ -17,7 +17,7 @@ enum JokeError: LocalizedError {
     }
 }
 
-struct JokeValidator {
+class JokeValidator {
     
     private let badWords: [String]
     
@@ -27,7 +27,7 @@ struct JokeValidator {
     
     func isValidJoke(joke: JokeViewModel) throws -> Bool {
         for word in badWords {
-            guard !joke.text.contains(word) else {
+            guard !joke.text.lowercased().contains(word.lowercased()) else {
                 throw JokeError.badJoke
             }
         }
