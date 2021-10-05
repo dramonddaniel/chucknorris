@@ -9,20 +9,25 @@ import UIKit
 
 enum JokeError: LocalizedError {
     case badJoke
+    case tooLong
     var errorDescription: String? {
         switch self {
         case .badJoke:
             return "Bad joke."
+        case .tooLong:
+            return "Joke is too long."
         }
     }
 }
 
 class JokeValidator {
     
-    private let badWords: [String]
+    private var badWords: [String]
+    private var maxCharacters: Int
     
-    init(badWords: [String]) {
+    init(badWords: [String], maxCharacters: Int) {
         self.badWords = badWords
+        self.maxCharacters = maxCharacters
     }
     
     func isValidJoke(joke: JokeViewModel) throws -> Bool {
@@ -30,6 +35,9 @@ class JokeValidator {
             guard !joke.text.lowercased().contains(word.lowercased()) else {
                 throw JokeError.badJoke
             }
+        }
+        if joke.text.count > maxCharacters {
+            throw JokeError.tooLong
         }
         return true
     }

@@ -14,7 +14,7 @@ class MockService: ServiceProtocol {
     init(jokes: [Joke]) {
         self.jokes = jokes
     }
-
+    
     func fetchData<T>(_ endpoint: String, completion: @escaping (Result<T, Error>) -> Void) where T : Decodable {
         let data = Data(value: jokes)
         guard let data = try? JSONEncoder().encode(data),

@@ -11,7 +11,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
 
-
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         
         guard let windowScene = (scene as? UIWindowScene) else { return }
@@ -19,11 +18,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let window = UIWindow(windowScene: windowScene)
         self.window = window
         
-        let api = Service()
-//        let api = MockService(jokes: [
-//            Joke(id: 0, joke: "Hello World"),
-//            Joke(id: 0, joke: "Hello World"),
-//        ])
+//        let api = Service()
+        let api = MockService(jokes: [
+            Joke(id: 0, joke: "This is a longer joke to show how it will manipulate the UICollectionView cell size."),
+            Joke(id: 1, joke: "Hello World"),
+        ])
         let viewModel = MainControllerViewModel(api: api)
         let rootViewController = MainController(viewModel: viewModel)
         let navigationController = UINavigationController(rootViewController: rootViewController)

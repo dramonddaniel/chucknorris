@@ -16,7 +16,7 @@ class MainControllerViewModel {
         self.fetchJokes()
     }
     
-    var navigationTitle: String = "Chuck Norris 💪"
+    var navigationTitle: String = "iOS Task"
     
     var updateUI: (() -> ())?
     
@@ -37,7 +37,8 @@ class MainControllerViewModel {
                 })
                 
                 let badWords: [String] = ["List", "Of", "Bad", "Words"]
-                let jokeValidator = JokeValidator(badWords: badWords)
+                let maxCharacters: Int = 40
+                let jokeValidator = JokeValidator(badWords: badWords, maxCharacters: maxCharacters)
                 
                 self.jokes = jokeViewModel.filter({ joke in
                     guard let isValid: Bool = try? jokeValidator.isValidJoke(joke: joke) else { return false }
