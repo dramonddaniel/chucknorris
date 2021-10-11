@@ -21,7 +21,8 @@ class MainControllerTests: XCTestCase {
 
         let viewModel = MainControllerViewModel(api: api)
         sut = MainController(viewModel: viewModel)
-        _ = sut.view
+        sut.view.setNeedsLayout()
+        sut.view.layoutIfNeeded()
     }
 
     override func tearDown() {
@@ -29,7 +30,7 @@ class MainControllerTests: XCTestCase {
     }
     
     func testMainControllerNavigationTitle() {
-        let expected: String = "Chuck Norris 💪"
+        let expected: String = "iOS Task"
         let result: String = sut.viewModel.navigationTitle
         XCTAssertEqual(expected, result)
     }
@@ -40,5 +41,23 @@ class MainControllerTests: XCTestCase {
 
     func testItemsForCollectionView() {
         XCTAssertGreaterThan(sut.viewModel.jokes.count, 0)
+    }
+    
+    func testCollectionViewCellText() {
+        let expected: [String] = ["First Joke.", "Second Joke."]
+        for (item, text) in expected.enumerated() {
+            let indexPath = IndexPath(item: item, section: 0)
+            let cell = sut.collectionView.cellForItem(at: indexPath) as? JokeCell
+            XCTAssertEqual(cell?.textLabel.text, text)
+        }
+    }
+    
+    func testCollectionViewCellHeight() {
+        let index: Int = 0
+        let indexPath = IndexPath(item: index, section: 0)
+        let cell = sut.collectionView.cellForItem(at: indexPath) as? JokeCell
+        let cellHeight: CGFloat = cell?.bounds.height ?? 0
+        XCTAssertGreaterThan(cellHeight, 0)
+        XCTAssertEqual(sut.viewModel.jokes[index].cellHeight, cellHeight)
     }
 }
